@@ -7,16 +7,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.abilitybots.api.bot.AbilityBot;
+import org.telegram.abilitybots.api.objects.Ability;
+import org.telegram.abilitybots.api.objects.Locality;
+import org.telegram.abilitybots.api.objects.Privacy;
 
 import ru.npte.sloth.slothhelper.service.SlothWebSiteParsingService;
 
 @Component
-public class SlothHelperBot  extends TelegramLongPollingBot {
+public class SlothHelperBot extends AbilityBot {
 
     @Autowired
     private SlothWebSiteParsingService slothWebSiteParsingService;
@@ -29,6 +31,15 @@ public class SlothHelperBot  extends TelegramLongPollingBot {
 	@Value("SlothBot")
 	private String username;
 
+    @Value("157655912")
+    private Integer creatorId;
+
+    @Override
+    public int creatorId() {
+        return this.creatorId;
+    }
+
+    /*
 	@Override
 	public String getBotToken() {
 		return token;
@@ -38,7 +49,14 @@ public class SlothHelperBot  extends TelegramLongPollingBot {
 	public String getBotUsername() {
 		return username;
 	}
+    */
 
+    public SlothHelperBot(@Value("539413361:AAFEtAdBwlCnY9_ZcYUpdgCOEIl5Q99D41Y") String token, @Value("SlothBot") String username) {
+        super(token, username);
+    }
+
+
+    /*
     @Override
 	public void onUpdateReceived(Update update) {
 		if (update.hasMessage()) {
@@ -58,6 +76,17 @@ public class SlothHelperBot  extends TelegramLongPollingBot {
 			}
 		}
 	}
+    */
+
+    public Ability getAucList() {
+        return Ability.builder()
+            .name("lots")
+            .info("return auction lots")
+            .locality(Locality.ALL)
+            .privacy(Privacy.PUBLIC)
+            .action(ctx -> silent.send("Hellooo!", ctx.chatId()))
+            .build();
+    }
 
 	@PostConstruct
 	public void start() {
