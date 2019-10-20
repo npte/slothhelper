@@ -1,15 +1,21 @@
 package ru.npte.sloth.slothhelper.service;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import java.io.IOException;
-import java.util.stream.Collectors;
-import java.util.List;
 
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @EnableScheduling
@@ -17,12 +23,15 @@ public class SlothWebSiteParsingService {
 
     private static final Logger logger = LoggerFactory.getLogger(SlothWebSiteParsingService.class);
 
-    //@Scheduled(fixedRate=600000)
+    @Value( "${sloth.auc.url}" )
+    private String aucUrl;
+
+    @Scheduled(fixedRate=10000)
     public void printMessage() {
         logger.info("This method executes by scheduler every 10 sec");
     }
 
-    public List<String> getAucItemsNames() throws IOException {
+    /*public List<String> getAucItemsNames() throws IOException {
         String URL = "http://www.slothmud.org/wp/live-info/live-auctions";
 
         return Jsoup.connect(URL).get()
@@ -32,6 +41,29 @@ public class SlothWebSiteParsingService {
                     return new AucItem(trs).toString();
                 }
             ).collect(Collectors.toList());
+    }*/
+
+    public List<String> getAucItemsNames() {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(aucUrl).get().build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            ResponseBody responseBody = response.body();
+
+            if (responseBody != null) {
+                return Arrays.asList(responseBody.string().split("\\r?\\n"))
+                        .stream()
+                        .map();
+            }
+
+            String serverAnswer = .string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Collections.emptyList();
     }
 
 
