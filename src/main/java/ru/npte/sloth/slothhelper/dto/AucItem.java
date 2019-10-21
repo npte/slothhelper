@@ -22,6 +22,15 @@ public class AucItem {
         this.name = String.join(" ", Arrays.asList(tokens).subList(7, tokens.length));
     }
 
+    public AucItem(String id, String seller, String name) {
+        this.id = id;
+        this.seller = seller;
+        this.name = name;
+        this.current = null;
+        this.buyout = null;
+        this.age = null;
+    }
+
     public String getId() {
         return id;
     }

@@ -10,7 +10,7 @@ import java.util.List;
 import static ru.npte.sloth.slothhelper.utils.ListUtils.isEmpty;
 
 @Service
-public class MessageFactory {
+public class MessageCreationService {
 
     @Autowired
     private ItemsCache itemsCache;
@@ -43,7 +43,10 @@ public class MessageFactory {
             return sb.append(itemInfo.get(0)).toString();
         }
 
-        sb.append("<br/>In eqlist few items with this desc:<br/>");
+        sb.append("<br/>In eqlist few items with this desc:");
 
+        itemInfo.forEach(i -> sb.append("<br/>").append(i));
+
+        return sb.toString();
     }
 }
