@@ -16,6 +16,8 @@ public class OkHttpClientWrapper implements HttpClient {
 
     private static final Logger logger = LoggerFactory.getLogger(OkHttpClientWrapper.class);
 
+    private static final String TELEGRAM_SEND_MESSAGE_URL = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&parse_mode=HTML&text=%s";
+
     @Value( "${sloth.auc.url}" )
     private String aucUrl;
 
@@ -49,5 +51,17 @@ public class OkHttpClientWrapper implements HttpClient {
         }
 
         return responseBodyString;
+    }
+
+    public void sendMessage(String botApiKey, String channelName, String message) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(String.format(TELEGRAM_SEND_MESSAGE_URL, botApiKey, channelName, message))
+                .get().build();
+        try {
+            client.newCall(request).execute();
+        } catch (IOException e) {
+            logger.error("Error while sending message", e);
+        }
     }
 }
