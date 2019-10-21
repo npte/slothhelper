@@ -11,18 +11,29 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.npte.sloth.slothhelper.enums.EqListClassNames.ITEM;
+import static ru.npte.sloth.slothhelper.utils.ListUtils.isNotEmpty;
 
 @Component
 public class ItemsCache {
 
     private static final String EQ_LIST_URL = "http://slothmudeq.tk/?search=";
 
-    private final Map<String, String> cache = new HashMap<>();
+    private final Map<String, List<String>> cache = new HashMap<>();
 
-    public String getItemInfo(String itemName) {
-        String itemInfo = cache.get(itemName);
+    public List<String> getItemInfo(String itemName) {
+        List<String> itemInfo = cache.get(itemName);
 
-        return itemInfo != null ? itemInfo : getInfoFromWeb(itemName).get(0);
+        if (itemInfo != null) {
+            return itemInfo;
+        }
+
+        itemInfo = getInfoFromWeb(itemName);
+
+        if (isNotEmpty(itemInfo)) {
+            cache.put(itemName, itemInfo);
+        }
+
+        return  itemInfo;
     }
 
     private List<String> getInfoFromWeb(String itemName) {

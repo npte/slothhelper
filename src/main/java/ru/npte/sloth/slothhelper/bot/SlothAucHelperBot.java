@@ -1,4 +1,4 @@
-package ru.npte.sloth.slothhelper.config;
+package ru.npte.sloth.slothhelper.bot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
