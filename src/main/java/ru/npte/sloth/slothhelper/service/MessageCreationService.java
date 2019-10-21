@@ -22,16 +22,15 @@ public class MessageCreationService {
         sb.append(aucItem.getSeller())
                 .append(" now sell ")
                 .append(aucItem.getName())
-                .append("<br/>")
+                .append("%0A")
                 .append("Current price: ")
                 .append(aucItem.getCurrent());
 
         if (!"-1".equals(aucItem.getBuyout())) {
-            sb.append("<br/>").append(aucItem.getCurrent());
+            sb.append("%0A").append("Buyout: ").append(aucItem.getBuyout());
         }
 
-        sb.append("<br/>")
-                .append(aucItem.getAge());
+        sb.append("%0A").append("Age: ").append(aucItem.getAge());
 
         List<String> itemInfo = itemsCache.getItemInfo(aucItem.getName());
 
@@ -43,9 +42,9 @@ public class MessageCreationService {
             return sb.append(itemInfo.get(0)).toString();
         }
 
-        sb.append("<br/>In eqlist few items with this desc:");
+        sb.append("%0AIn eqlist few items with this desc:");
 
-        itemInfo.forEach(i -> sb.append("<br/>").append(i));
+        itemInfo.forEach(i -> sb.append("%0A").append(i));
 
         return sb.toString();
     }

@@ -121,22 +121,22 @@ public class EqListElementToStringMapper {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("<b>").append(this.title).append("<b><br>");
+            sb.append("<b>").append(this.title).append("<b>%0A");
             if (this.flags != null) {
-                sb.append(this.flags).append("<br>");
+                sb.append(this.flags).append("%0A");
             }
             sb.append("AC: ").append(this.ac);
 
             if (this.stats != null && ! "".equalsIgnoreCase(this.stats)) {
-                sb.append("<br>Stats: ").append(this.stats);
+                sb.append("%0AStats: ").append(this.stats);
             }
 
             if (this.cpFor != null && !this.cpFor.isEmpty()) {
-                sb.append("<br>Cp for:<br>").append(String.join("<br>", this.cpFor));
+                sb.append("%0ACp for:%0A").append(String.join("%0A", this.cpFor));
             }
 
             if (this.clasps != null) {
-                sb.append("<br>Has clasp:<br>").append(String.join("<br>", this.clasps));
+                sb.append("%0AHas clasp:%0A").append(String.join("%0A", this.clasps));
             }
 
             return sb.toString();

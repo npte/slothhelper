@@ -54,12 +54,14 @@ public class OkHttpClientWrapper implements HttpClient {
     }
 
     public void sendMessage(String botApiKey, String channelName, String message) {
+        logger.info("sendin messaage {}", message);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(String.format(TELEGRAM_SEND_MESSAGE_URL, botApiKey, channelName, message))
                 .get().build();
         try {
-            client.newCall(request).execute();
+            Response resp = client.newCall(request).execute();
+            logger.info("Gor response {}",  resp);
         } catch (IOException e) {
             logger.error("Error while sending message", e);
         }

@@ -40,9 +40,9 @@ public class SqliteAucRepository implements AucRepository {
 
             resultSet = stat.executeQuery();
             while (resultSet.next()) {
-                res = new AucItem(resultSet.getString(0),
-                        resultSet.getString(1),
-                        resultSet.getString(2));
+                res = new AucItem(resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3));
             }
 
         } catch (SQLException e) {

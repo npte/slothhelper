@@ -38,6 +38,7 @@ public class SlothAucHelperBot {
 			private int i = 0;
 			@Override
 			public void run() {
+				logger.info("Try send message {}", messages.get(i));
 				client.sendMessage(token, channel, messages.get(i));
 				if (i + 1 < messages.size()) {
 					i++;
