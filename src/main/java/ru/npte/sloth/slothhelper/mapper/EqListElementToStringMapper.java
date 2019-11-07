@@ -125,7 +125,8 @@ public class EqListElementToStringMapper {
             if (this.flags != null) {
                 sb.append(this.flags).append("%0A");
             }
-            sb.append("AC: ").append(this.ac);
+
+            sb.append(this.ac.contains("d") ? "Damage: " : "AC: ").append(this.ac);
 
             if (this.stats != null && ! "".equalsIgnoreCase(this.stats)) {
                 sb.append("%0AStats: ").append(this.stats);

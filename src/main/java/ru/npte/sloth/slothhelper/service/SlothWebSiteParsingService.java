@@ -32,8 +32,7 @@ public class SlothWebSiteParsingService {
     @Autowired
     private SlothAucHelperBot slothAucHelperBot;
 
-    //@Scheduled(fixedRate=900000)
-    @Scheduled(fixedRate=10000)
+    @Scheduled(fixedRate=900000)
     public void getAucItemsNames() {
         logger.info("Execute auc parsing");
         List<String> aucItems = Arrays.stream(client.get().split("\\r?\\n"))
