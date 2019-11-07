@@ -121,7 +121,7 @@ public class EqListElementToStringMapper {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            sb.append("<b>").append(this.title).append("<b>%0A");
+            sb.append("<b>").append(this.title).append("</b>%0A");
             if (this.flags != null) {
                 sb.append(this.flags).append("%0A");
             }

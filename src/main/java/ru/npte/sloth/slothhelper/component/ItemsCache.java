@@ -56,7 +56,7 @@ public class ItemsCache {
     }
 
     private String searchQuery(String itemName) {
-        String searchQuery =  itemName.replace("'", "%27").replace(" ", "+").replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "");
+        String searchQuery =  itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "").replace("'", "%27").replace(" ", "+");
         logger.info("Search query: {} -> {}", itemName, searchQuery);
         return searchQuery;
     }
