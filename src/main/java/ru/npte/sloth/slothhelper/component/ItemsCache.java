@@ -52,7 +52,6 @@ public class ItemsCache {
     }
 
     private String searchQuery(String itemName) {
-        return itemName.replace("'", "%27").replace(" ", "+");
-        //.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "")
+        return itemName.replace("'", "%27").replace(" ", "+").replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "");
     }
 }
