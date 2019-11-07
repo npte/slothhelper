@@ -44,6 +44,8 @@ public class SlothWebSiteParsingService {
                 .map(item -> messageCreationService.createMessage(item))
                 .collect(Collectors.toList());
 
+        logger.info("Collect {} items", aucItems.size());
+
         slothAucHelperBot.sendMessage(aucItems);
     }
 }

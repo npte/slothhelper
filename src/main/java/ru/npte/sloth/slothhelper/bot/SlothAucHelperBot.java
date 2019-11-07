@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 public class SlothAucHelperBot {
 
@@ -22,6 +23,8 @@ public class SlothAucHelperBot {
 	private final String token;
 	private final String channel;
 
+	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
 	public SlothAucHelperBot(String name, String token, String channel) {
 		this.name = name;
 		this.token = token;
@@ -33,17 +36,20 @@ public class SlothAucHelperBot {
 			return;
 		}
 
-		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-		executorService.schedule(new Runnable() {
-			private int i = 0;
+		messages.forEach(new Consumer<String>() {
 			@Override
-			public void run() {
-				logger.info("Try send message {}", messages.get(i));
-				client.sendMessage(token, channel, messages.get(i));
-				if (i + 1 < messages.size()) {
-					i++;
-				}
+			public void accept(String s) {
+				executorService.schedule(new Runnable() {
+					private int i = 0;
+					@Override
+					public void run() {
+						logger.info("Try send message {}", s);
+						client.sendMessage(token, channel, s);
+					}
+				}, 1, TimeUnit.SECONDS);
 			}
-		}, 1, TimeUnit.SECONDS);
+		});
+
+
 	}
 }
