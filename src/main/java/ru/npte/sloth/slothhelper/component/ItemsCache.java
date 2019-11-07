@@ -1,6 +1,8 @@
 package ru.npte.sloth.slothhelper.component;
 
 import org.jsoup.Jsoup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ru.npte.sloth.slothhelper.mapper.EqListElementToStringMapper;
 
@@ -15,6 +17,8 @@ import static ru.npte.sloth.slothhelper.utils.ListUtils.isNotEmpty;
 
 @Component
 public class ItemsCache {
+
+    private static final Logger logger = LoggerFactory.getLogger(ItemsCache.class);
 
     private static final String EQ_LIST_URL = "http://slothmudeq.tk/?search=";
 
@@ -46,12 +50,14 @@ public class ItemsCache {
                     .map(EqListElementToStringMapper::map)
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed while get item info from eqlist", e);
         }
         return res;
     }
 
     private String searchQuery(String itemName) {
-        return itemName.replace("'", "%27").replace(" ", "+").replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "");
+        String searchQuery =  itemName.replace("'", "%27").replace(" ", "+").replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "");
+        logger.info("Search query: {} -> {}", itemName, searchQuery);
+        return searchQuery;
     }
 }

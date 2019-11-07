@@ -7,8 +7,6 @@ import ru.npte.sloth.slothhelper.httpclient.HttpClient;
 import ru.npte.sloth.slothhelper.utils.ListUtils;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -22,8 +20,6 @@ public class SlothAucHelperBot {
 	private final String name;
 	private final String token;
 	private final String channel;
-
-	private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
 	public SlothAucHelperBot(String name, String token, String channel) {
 		this.name = name;
@@ -39,17 +35,14 @@ public class SlothAucHelperBot {
 		messages.forEach(new Consumer<String>() {
 			@Override
 			public void accept(String s) {
-				executorService.schedule(new Runnable() {
-					private int i = 0;
-					@Override
-					public void run() {
-						logger.info("Try send message {}", s);
-						client.sendMessage(token, channel, s);
-					}
-				}, 1, TimeUnit.SECONDS);
-			}
+                logger.info("Try send message {}", s);
+                client.sendMessage(token, channel, s);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 		});
-
-
 	}
 }
