@@ -4,9 +4,11 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import ru.npte.sloth.slothhelper.mapper.EqListElementToStringMapper;
+import ru.npte.sloth.slothhelper.dto.Item;
+import ru.npte.sloth.slothhelper.mapper.EqListElementToItemMapper;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,22 +43,43 @@ public class ItemsCache {
     }
 
     private List<String> getInfoFromWeb(String itemName) {
-        List<String> res = null;
         try {
-            res = Jsoup.connect(EQ_LIST_URL + searchQuery(itemName))
+            List<Item> res = Jsoup.connect(EQ_LIST_URL + searchQuery(itemName))
                     .get()
-                    .getElementsByTag("div").stream()
-                    .filter(it -> it.hasClass(ITEM.getName()))
-                    .map(EqListElementToStringMapper::map)
+                    .getElementsByClass(ITEM.getName()).stream()
+                    .map(EqListElementToItemMapper::map)
+                    .filter(it -> itemName.equalsIgnoreCase(it.getName()))
                     .collect(Collectors.toList());
+
+            if (res.size() > 0) {
+                return res.stream().map(Item::toString).collect(Collectors.toList());
+            }
+
+            //Если пусто - возможно это руна
+            String runeName = itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "") + " rune";
+            res = Jsoup.connect(EQ_LIST_URL + searchQuery(runeName))
+                    .get()
+                    .getElementsByClass(ITEM.getName()).stream()
+                    .map(EqListElementToItemMapper::map)
+                    .filter(it -> runeName.equalsIgnoreCase(it.getName()))
+                    .collect(Collectors.toList());
+
+            if (res.size() > 0) {
+                Item item = new Item();
+                item.setTitle(itemName);
+                item.setCpFor(res.stream().map(Item::toString).collect(Collectors.toList()));
+                return Collections.singletonList(item.toString());
+            }
+
         } catch (IOException e) {
             logger.error("Failed while get item info from eqlist", e);
         }
-        return res;
+        return null;
     }
 
     private String searchQuery(String itemName) {
-        String searchQuery =  itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "").replace("'", "%27").replace(" ", "+");
+        //String searchQuery =  .replace("'", "%27").replace(" ", "+");
+        String searchQuery =  itemName.replaceAll("'", "%27").replaceAll(" ", "+");
         logger.info("Search query: {} -> {}", itemName, searchQuery);
         return searchQuery;
     }

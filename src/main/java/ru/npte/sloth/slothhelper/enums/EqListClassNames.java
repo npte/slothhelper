@@ -12,6 +12,7 @@ public enum EqListClassNames {
     CPS_FOR("cpsFor attaches"),
     HAS_CLASP("cpsFor attaches hasClasp"),
     ATTACH_ITEM("attachitem"),
+    ATTACHES("attaches"),
     ;
 
     private String name;
