@@ -12,6 +12,7 @@ public class Item {
     private List<String> clasps;
     private List<String> attachTo;
     private String poppers;
+    private String keywords;
 
     public void setTitle(String title) {
         this.title = title;
@@ -50,8 +51,16 @@ public class Item {
         this.poppers = poppers;
     }
 
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getKeywords() {
+        return keywords;
     }
 
     @Override

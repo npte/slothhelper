@@ -13,7 +13,7 @@ public class SqliteAucRepository implements AucRepository {
     private static final Logger logger = LoggerFactory.getLogger(SqliteAucRepository.class);
 
     private final static String DRIVER_NAME = "org.sqlite.JDBC";
-    private final static String CONNECTION_STRING = "jdbc:sqlite:slothauc.s3db";
+    private final static String CONNECTION_STRING = "jdbc:sqlite:/db/slothauc.s3db";
 
     private final static String SQL_GET_ITEM = "select * from storage where " +
             "id = ? and seller = ? and name = ?";

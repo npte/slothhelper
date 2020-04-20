@@ -22,6 +22,14 @@ public class EqListElementToItemMapper {
                 .findFirst()
                 .orElseThrow(TitleDivNotFoundException::new);
 
+        titleDiv.childNodes().stream()
+                .filter(el -> el instanceof Element)
+                .filter(el -> ((Element)el).hasClass(KEYWORDS.getName()))
+                .findFirst()
+                .ifPresent(
+                        el -> item.setKeywords(((Element)el).text())
+                );
+
         String title = titleDiv
                 .getElementsByClass(NAME.getName())
                 .stream()
@@ -37,7 +45,6 @@ public class EqListElementToItemMapper {
                 .stream()
                 .findFirst()
                 .ifPresent(e -> item.setFlags(e.text()));
-
 
         item.setAc(element
                 .getElementsByClass(CELL_AC.getName())
@@ -81,7 +88,10 @@ public class EqListElementToItemMapper {
                             .collect(Collectors.toList()))
             );
 
-            statsDiv.get().getElementsByClass(ATTACHES.getName()).stream().findFirst().ifPresent(
+            statsDiv.get().getElementsByClass(ATTACHES.getName()).stream()
+                    .filter(el -> !el.hasClass(CPS_FOR.getName()))
+                    .filter(el -> !el.hasClass(HAS_CLASP.getName()))
+                    .findFirst().ifPresent(
                    e -> item.setAttachTo(e.childNodes()
                            .stream()
                            .filter(el -> el instanceof Element)

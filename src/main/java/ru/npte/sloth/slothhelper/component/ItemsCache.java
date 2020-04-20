@@ -56,12 +56,12 @@ public class ItemsCache {
             }
 
             //Если пусто - возможно это руна
-            String runeName = itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "") + " rune";
+            String runeName = itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "").replaceAll(" ","_") + " rune";
             res = Jsoup.connect(EQ_LIST_URL + searchQuery(runeName))
                     .get()
                     .getElementsByClass(ITEM.getName()).stream()
                     .map(EqListElementToItemMapper::map)
-                    .filter(it -> runeName.equalsIgnoreCase(it.getName()))
+                    .filter(it -> runeName.equalsIgnoreCase(it.getKeywords()))
                     .collect(Collectors.toList());
 
             if (res.size() > 0) {
