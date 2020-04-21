@@ -12,7 +12,8 @@ public class ItemsCacheTest extends TestCase {
 
     @Test
     public void testGetItemInfo() {
-        List<String> a = itemCache.getItemInfo("a soul imprisoned within a phial");
+        List<String> a = itemCache.getItemInfo("a Brown Red Spinel");
+
 
         System.out.println(a.stream().map(e -> e.replaceAll("%0A", System.lineSeparator())).collect(Collectors.toList()));
     }
