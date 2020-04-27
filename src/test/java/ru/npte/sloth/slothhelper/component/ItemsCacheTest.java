@@ -12,7 +12,7 @@ public class ItemsCacheTest extends TestCase {
 
     @Test
     public void testGetItemInfo() {
-        List<String> a = itemCache.getItemInfo("a Brown Red Spinel");
+        List<String> a = itemCache.getItemInfo("a Banded Agate");
 
 
         System.out.println(a.stream().map(e -> e.replaceAll("%0A", System.lineSeparator())).collect(Collectors.toList()));

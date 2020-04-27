@@ -56,7 +56,10 @@ public class ItemsCache {
             }
 
             //Если пусто - возможно это руна
-            String runeName = itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "") + " rune";
+            //Костыль для a Banded Agate
+            String runeName = "a Banded Agate".equalsIgnoreCase(itemName) ?
+                    "Banded_Agate banded agate rune" :
+                    itemName.replaceAll("(^a )|(^A )|(^an )|(^An )|(^the )|(^The )", "") + " rune";
             res = Jsoup.connect(EQ_LIST_URL + searchQuery(runeName))
                     .get()
                     .getElementsByClass(ITEM.getName()).stream()
